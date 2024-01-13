@@ -5,6 +5,9 @@ import (
 )
 
 func main() {
-	file, _ := os.Open("test.txt")
+	file, err := os.Open("test.txt")
 	file.Close()
+	if err != nil {
+		panic(err)
+	}
 }
