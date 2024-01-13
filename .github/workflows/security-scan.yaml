@@ -1,0 +1,35 @@
+---
+name: Security
+on:
+    push:
+        branches:
+            - main
+    pull_request: {}
+    schedule:
+    - cron: "0 0 * * *"
+env:
+    CODEQL_EXTRACTOR_GO_BUILD_TRACING: 'on'
+jobs:
+    analyze:
+        runs-on: ubuntu-latest
+        permissions:
+            actions: read
+            contents: read
+            security-events: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - uses: github/codeql-action/init@v3
+              with:
+                languages: go
+            - name: Build Project 1
+              run: |
+                set -x
+                go build -o project1-out -v ./project1
+            - name: Build Project 2
+              run: |
+                set -x
+                go build -o project2-out -v ./project2
+            - uses: github/codeql-action/analyze@v3
+    
+    
