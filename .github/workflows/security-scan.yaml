@@ -7,11 +7,13 @@ on:
     pull_request: {}
     schedule:
     - cron: "0 0 * * *"
-env:
-    CODEQL_EXTRACTOR_GO_BUILD_TRACING: 'on'
 jobs:
     analyze:
         runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                projects: ["project1", "project2"]
         permissions:
             actions: read
             contents: read
@@ -22,14 +24,13 @@ jobs:
             - uses: github/codeql-action/init@v3
               with:
                 languages: go
-            - name: Build Project 1
-              run: |
-                set -x
-                go build -o project1-out -v ./project1
-            - name: Build Project 2
-              run: |
-                set -x
-                go build -o project2-out -v ./project2
+                source-root: ${{ matrix.projects }}
+                packs: codeql/go-all
+            # - name: Build Project ${{ matrix.projects }}
+            #   run: |
+            #     set -x
+            #     go build -o build -v ./${{ matrix.projects }}
+            - uses: github/codeql-action/autobuild@v3
             - uses: github/codeql-action/analyze@v3
               with:
                 category: "/language:go"
