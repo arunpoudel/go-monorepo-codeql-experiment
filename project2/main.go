@@ -2,14 +2,17 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"strings"
 )
 
 func main() {
-	ptr, err := os.Open("test.go")
-	// BAD: ptr is dereferenced before either it or `err` has been checked.
-	fmt.Printf("Opened %v\n", *ptr)
-	if err != nil {
-		fmt.Printf("Bad input: %s\n", err)
+	values := strings.Split("the answer to life, the universe and everything", ",")
+	searchName := "the answer to life"
+	// BAD: index could be equal to length
+	for i := 0; i <= len(values); i++ {
+		// When i = length, this access will be out of bounds
+		if values[i] == searchName {
+			fmt.Println("Found at position", i)
+		}
 	}
 }
