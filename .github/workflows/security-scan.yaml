@@ -31,5 +31,7 @@ jobs:
                 set -x
                 go build -o project2-out -v ./project2
             - uses: github/codeql-action/analyze@v3
+              with:
+                category: "/language:go"
     
     
