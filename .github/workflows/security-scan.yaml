@@ -25,7 +25,6 @@ jobs:
               with:
                 languages: go
                 source-root: ${{ matrix.projects }}
-                packs: codeql/go-all
                 queries: security-extended,security-and-quality
             - uses: actions/setup-go@v2
               with:
@@ -34,5 +33,4 @@ jobs:
               with:
                 working-directory: ${{ matrix.projects }}
             - uses: github/codeql-action/analyze@v3
-    
     
