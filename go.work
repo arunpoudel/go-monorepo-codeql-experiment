@@ -1,0 +1,6 @@
+go 1.21
+
+use (
+	./project1
+	./project2
+)
