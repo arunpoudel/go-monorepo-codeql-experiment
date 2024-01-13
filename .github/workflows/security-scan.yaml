@@ -24,10 +24,13 @@ jobs:
             - uses: github/codeql-action/init@v3
               with:
                 languages: go
-            - name: Build Project ${{ matrix.projects }}
-              run: |
-                set -x
-                go build -o build -v ./${{ matrix.projects }}
+                source-root: ${{ matrix.projects }}
+                packs: codeql/go-all
+            # - name: Build Project ${{ matrix.projects }}
+            #   run: |
+            #     set -x
+            #     go build -o build -v ./${{ matrix.projects }}
+            - uses: github/codeql-action/autobuild@v3
             - uses: github/codeql-action/analyze@v3
               with:
                 category: "/language:go"
