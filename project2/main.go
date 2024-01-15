@@ -3,6 +3,7 @@ package main
 import (
 	"strings"
 
+	"github.com/c-bata/go-prompt"
 	"github.com/containerd/containerd"
 	progressbar "github.com/schollz/progressbar/v3"
 	"github.com/sirupsen/logrus"
@@ -24,4 +25,10 @@ func main() {
 	if !ok {
 		panic("containerd runtime not found")
 	}
+	prompt.Input(">> ", func(d prompt.Document) []prompt.Suggest {
+		return []prompt.Suggest{
+			{Text: "foo", Description: "some foo"},
+			{Text: "bar", Description: "some bar"},
+		}
+	})
 }
