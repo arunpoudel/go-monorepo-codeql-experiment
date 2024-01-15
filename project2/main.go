@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strings"
+
+	"github.com/containerd/containerd"
 )
 
 func main() {
@@ -15,5 +17,8 @@ func main() {
 			fmt.Println("Found at position", i)
 		}
 	}
-	fmt.Println("Done")
+	ok := containerd.CheckRuntime("runc", "crio")
+	if !ok {
+		panic("containerd runtime not found")
+	}
 }
