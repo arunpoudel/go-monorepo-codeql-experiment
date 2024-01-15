@@ -29,8 +29,23 @@ jobs:
                     - ${{ matrix.projects }}/**
             - uses: actions/setup-go@v4
               with:
-                go-version: '1.21'
-                cache-dependency-path: ${{ matrix.projects }}/go.sum
+                go-version-file: ${{ matrix.projects }}/go.mod
+                cache: false
+            - name: Determine Golang cache paths
+              id: go-env
+              run: |
+                echo "build-cache-path=$(go env GOCACHE)" >>"$GITHUB_OUTPUT"
+                echo "module-cache-path=$(go env GOMODCACHE)" >>"$GITHUB_OUTPUT"
+                echo "go-sum-file-path=${{ matrix.projects }}/go.sum" >>"$GITHUB_OUTPUT"
+            - name: Setup Golang Cache
+              uses: actions/cache@v3
+              with:
+                path: |
+                  ${{ steps.go-env.outputs.build-cache-path }}
+                  ${{ steps.go-env.outputs.module-cache-path }}
+                key: ${{ runner.os }}-go-${{ hashFiles(steps.go-env.outputs.go-sum-file-path) }}
+                restore-keys: |
+                  ${{ runner.os }}-go-
             - uses: github/codeql-action/init@v3
               if: steps.changes.outputs.project == 'true'
               with:
