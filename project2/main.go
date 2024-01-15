@@ -15,4 +15,5 @@ func main() {
 			fmt.Println("Found at position", i)
 		}
 	}
+	fmt.Println("Done")
 }
